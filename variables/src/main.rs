@@ -4,7 +4,7 @@ fn main() {
     let x = x * 2;
     println!("The value of x is {}", x);
 
-    let spaces = "     ";
+    let mut spaces = "     ";
     let spaces = spaces.len(); // This type is diffrent from origin
     println!("The length of spaces is {}", spaces);
 
