@@ -20,4 +20,8 @@ fn main() {
     let remainder = 43 % 5;
     println!("{}, {}, {}, {}, {}", sum, difference, product, quotient, remainder);
 
+    // boolean
+    let t = true;
+    let f: bool = false;
+    println!("{},{}", t, f);
 }
