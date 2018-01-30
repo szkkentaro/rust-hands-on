@@ -8,4 +8,16 @@ fn main() {
     let y: f32 = 3.0;
     println!("{}, {}", x, y); 
 
+    // addtion
+    let sum = 5 + 10;
+    // substruction
+    let difference = 95.5 - 4.3;
+    // multiplication
+    let product = 4 * 30;
+    // division
+    let quotient = 56.7 / 32.2;
+    // remainder
+    let remainder = 43 % 5;
+    println!("{}, {}, {}, {}, {}", sum, difference, product, quotient, remainder);
+
 }
