@@ -24,4 +24,10 @@ fn main() {
     let t = true;
     let f: bool = false;
     println!("{},{}", t, f);
+
+    // character
+    let c = 'z';
+    let z = 'ℤ';
+    let heart_eyed_cat = '😻';
+    println!("{},{},{}", c, z, heart_eyed_cat);
 }
