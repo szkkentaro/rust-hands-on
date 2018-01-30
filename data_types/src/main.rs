@@ -41,4 +41,8 @@ fn main() {
     // array
     let a = [1, 2, 3];
     println!("{}, {}, {}", a[0], a[1], a[2]);
+
+    // index out of bounds build:pass run:panic
+    // let index = 10;
+    // let _element = a[index];
 }
