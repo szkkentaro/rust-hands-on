@@ -37,4 +37,8 @@ fn main() {
 
     let (x, y, z) = tup;
     println!("{}, {}, {}", x, y, z);
+
+    // array
+    let a = [1, 2, 3];
+    println!("{}, {}, {}", a[0], a[1], a[2]);
 }
