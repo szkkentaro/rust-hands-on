@@ -20,4 +20,15 @@ fn main() {
     } else {
         println!("number is not divided by 4, 3, or 2");
     }
+
+    let condition = true;
+    let number = if condition {
+        5
+    } else {
+        6
+        // variables must have a single type
+        // "six"
+    };
+
+    println!("The number of condition is {}", number);
 }
