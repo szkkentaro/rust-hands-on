@@ -31,4 +31,34 @@ fn main() {
     };
 
     println!("The number of condition is {}", number);
+
+    // loop
+    let mut cnt = 0;
+    loop {
+        if cnt >= 3 {
+            break;
+        }
+        println!("again!");
+        cnt += 1;
+    }
+
+    // while
+    let mut x = 3;
+    while x != 0 {
+        println!("x is {}", x);
+        x = x - 1
+    }
+    println!("LIFTOFF!");
+
+    // for
+    let a = [10, 20, 30, 40, 50];
+    for element in a.iter() {
+        println!("The value is {}", element);
+    }
+
+    // array reverse
+    for n in (1..4).rev() {
+        println!("n is {}", n);
+    }
+    println!("LIFTOFF!");
 }
