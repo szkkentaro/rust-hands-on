@@ -1,10 +1,17 @@
 fn main() {
-    println!("Hello, world!");
+    let a = 5;
+    let _y = double(a);
+    println!("{}", a);
+
+    let a = true;
+    let _y = change_truth(a);
+    println!("{}", a);
 }
 
+fn double(x: i32) -> i32 {
+    x * 2
+}
 
-fn foo() {
-    let v = vec![1, 2, 3];
-    let v2 = v;
-    println!("v[0] is : {}:", v[0]); // error: use of moved value
+fn change_truth(x: bool) -> bool {
+    !x
 }
