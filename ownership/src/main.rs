@@ -14,6 +14,14 @@ fn main() {
     let answer = foo(&v1, &v2);
     println!("{}", answer);
 
+    // &mut
+    let mut x  = 5;
+    {
+        let y = &mut x;
+        *y += 1;
+    }
+    println!("{}", x);
+
 }
 
 fn foo(v1: &Vec<i32>, v2: &Vec<i32>) -> i32 {
