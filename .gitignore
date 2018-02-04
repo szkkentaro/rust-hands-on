@@ -12,3 +12,6 @@ Cargo.lock
 
 # Remove node_modules
 **/node_modules
+
+# Remove editor setting
+.vscode/
