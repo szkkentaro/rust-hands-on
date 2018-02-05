@@ -1,4 +1,15 @@
 fn main() {
+    // ownership and functions
+    let s = String::from("hello"); // s comes into scope
+    takes_ownership(s);            // s's value moves into the function...
+                                   // ... and so is nolonger valid here.
+    //println!("{}", s);           // Error: use of moved value
+
+    let x = 5;                     // x comes into scope
+    makes_copy(x);                 // x moves into the function,
+                                   // but, i32 is Copy, so it's okay to still
+                                   // use x afterward.
+
     // primitive value has Copy type
     let a = 5;
     let _y = double(a);
@@ -22,6 +33,13 @@ fn main() {
     }
     println!("{}", x);
 
+}
+fn takes_ownership(some_string: String) {
+    println!("{}", some_string);
+}
+
+fn makes_copy(some_integer: i32) {
+    println!("{}", some_integer);
 }
 
 fn foo(v1: &Vec<i32>, v2: &Vec<i32>) -> i32 {
