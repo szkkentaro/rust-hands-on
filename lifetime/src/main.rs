@@ -11,4 +11,10 @@ fn main() {
     let f = Foo{x: y};
 
     println!("{}", f.x());
+
+    let x: &'static str = "Hello world."; // Strtig literal
+    static FOO: i32 = 5;
+    let y: &'static i32 = &FOO;
+
+    println!("{}, {}", x, y);
 }
