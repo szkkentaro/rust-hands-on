@@ -10,6 +10,9 @@ struct Point3d {
     z: i32
 }
 
+// struct tuple
+struct Color(i32, i32, i32);
+
 fn main() {
     let mut p = Point {x: 0, y: 0};
     p.x = 5;
@@ -29,4 +32,7 @@ fn main() {
     println!("{}, {}, {}", src.x, src.y, src.z);
     println!("{}, {}, {}", dst.x, dst.y, dst.z);
 
+    // tuple struct 
+    let black = Color(0, 0, 0);
+    println!("{}, {}, {}", black.0, black.1, black.2);
 }
