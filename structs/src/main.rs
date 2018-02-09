@@ -12,6 +12,7 @@ struct Point3d {
 
 // struct tuple
 struct Color(i32, i32, i32);
+struct Inches(i32);
 
 fn main() {
     let mut p = Point {x: 0, y: 0};
@@ -35,4 +36,8 @@ fn main() {
     // tuple struct 
     let black = Color(0, 0, 0);
     println!("{}, {}, {}", black.0, black.1, black.2);
+    // tuple struct : newtype pattern
+    let length = Inches(10);
+    let Inches(integer_length) = length;
+    println!("interger_length is {}", integer_length);
 }
