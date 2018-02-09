@@ -10,9 +10,12 @@ struct Point3d {
     z: i32
 }
 
-// struct tuple
+// tuple struct
 struct Color(i32, i32, i32);
 struct Inches(i32);
+
+// unit-like struct
+struct Electron;
 
 fn main() {
     let mut p = Point {x: 0, y: 0};
@@ -40,4 +43,7 @@ fn main() {
     let length = Inches(10);
     let Inches(integer_length) = length;
     println!("interger_length is {}", integer_length);
+    
+    // ToDo: What is this useful?
+    let _x = Electron;
 }
