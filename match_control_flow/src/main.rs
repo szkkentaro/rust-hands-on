@@ -22,24 +22,38 @@ fn main() {
         _ => () // do nothing
     }
 
+    #[derive(Debug)]
+    enum UsState {
+        Alabama,
+        Alaska,
+        // ... etc
+    }
     // an enum and a match
     enum Coin {
         Penny,
         Nickel,
         Dime,
-        Quarter,
+        Quarter(UsState),
     }
     fn value_in_cents(coin: Coin) -> u32 {
         match coin {
-            Coin::Penny => 1,
+            Coin::Penny => {
+                println!("Lucky penny!");
+                1
+            },
             Coin::Nickel => 5,
             Coin::Dime => 10,
-            Coin::Quarter => 25,
+            Coin::Quarter(state) => {
+                println!("Staete quater from {:?}!", state);
+                25
+            }
         }
     }
     let p = Coin::Penny;
     let n = Coin::Nickel;
     let d = Coin::Dime;
-    let q = Coin::Quarter;
+    let q = Coin::Quarter(UsState::Alabama);
     println!("{}, {}, {}, {}", value_in_cents(p), value_in_cents(n), value_in_cents(d), value_in_cents(q));
+
+    println!("{}", value_in_cents(Coin::Quarter(UsState::Alaska)));
 }
