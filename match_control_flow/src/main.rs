@@ -56,4 +56,17 @@ fn main() {
     println!("{}, {}, {}, {}", value_in_cents(p), value_in_cents(n), value_in_cents(d), value_in_cents(q));
 
     println!("{}", value_in_cents(Coin::Quarter(UsState::Alaska)));
+
+
+    fn plus_one(x: Option<i32>) -> Option<i32> {
+        match x {
+            Some(i) => Some(i + 1),
+            None => None, // this line is need avoid non-exhaustive patterns
+        }
+    }
+
+    let five = Some(5);
+    let six = plus_one(five);
+    let none = plus_one(None);
+    println!("{:?}, {:?}, {:?}", six, none, plus_one(six));
 }
