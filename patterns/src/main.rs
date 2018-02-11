@@ -81,5 +81,23 @@ fn main() {
         'ｱ' ... 'ﾝ' => println!("{}", letter),
         _ => println!("something else")
     }
-}
 
+    // binding in match
+    #[derive(Debug)]
+    struct Person {
+        name: Option<String>
+    }
+
+    let name = "Steve".to_string();
+    let x: Option<Person> = Some(Person {name: Some(name)});
+    match x {
+        Some(Person { name: ref a @ Some(_), ..}) => println!("{:?}", a),
+        _ => {}
+    }
+
+    let x = 8;
+    match x {
+        e @ 1 ... 5 | e @ 8 ... 10 => println!("{}", e),
+        _ => println!("anything"),
+    }
+}
