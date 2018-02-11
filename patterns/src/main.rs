@@ -100,4 +100,24 @@ fn main() {
         e @ 1 ... 5 | e @ 8 ... 10 => println!("{}", e),
         _ => println!("anything"),
     }
+
+    // match guard
+    enum OptionalInt {
+        Value(i32),
+        Missing,
+    }
+
+    let x = OptionalInt::Value(5);
+    match x {
+        OptionalInt::Value(i) if i > 5 => println!("Got an int bigger thatn five!"),
+        OptionalInt::Value(..) => println!("Got an int!"),
+        OptionalInt::Missing => println!("No such luck."),
+    }
+
+    let a = 4;
+    let b = false;
+    match a {
+        4 | 5 if b => println!("yes"), // (4 | 5) if b
+        _ => println!("no"),
+    }
 }
