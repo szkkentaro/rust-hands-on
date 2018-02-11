@@ -29,4 +29,27 @@ fn main() {
     match origin {
         Point {y, .. } => println!("y is {}", y),
     }
+
+    // ignore variable binding
+    let some_value: Result<&'static str, &'static str> = Ok("Hello world");
+    match some_value {
+        Ok(value) => println!("got a value: {}", value),
+        Err(_) => println!("an error occurred"),
+    }
+    
+    fn cordinate() -> (i32, i32, i32) {
+        (0, 1, 2)
+    }
+    let (x, _, z) = cordinate();
+    println!("x: {}, z:{}", x, z);
+
+    enum OptionalTuple {
+        Value(i32, i32, i32),
+        Missing,
+    }
+    let x = OptionalTuple::Value(5, -2, 3);
+    match x {
+        OptionalTuple::Value(..) => println!("got a tuple!"),
+        OptionalTuple::Missing => println!("No such luck."),
+    }
 }
