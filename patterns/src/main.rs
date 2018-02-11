@@ -62,4 +62,24 @@ fn main() {
     match x {
         ref mut mr => println!("Got a mutable reference to {}", mr),
     }
+
+    let y = 1;
+    match y {
+        1...5 => println!("one through five"),
+        _ => println!("something else"),
+    }
+
+    let letter = 'c';
+    match letter {
+        'a' ... 'j' => println!("early letter"),
+        'k' ... 'z' => println!("late letter"),
+        _ => println!("something else")
+    }
+
+    let letter = 'ｶ';
+    match letter {
+        'ｱ' ... 'ﾝ' => println!("{}", letter),
+        _ => println!("something else")
+    }
 }
+
