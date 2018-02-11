@@ -52,4 +52,14 @@ fn main() {
         OptionalTuple::Value(..) => println!("got a tuple!"),
         OptionalTuple::Missing => println!("No such luck."),
     }
+
+    // ref and ref mut
+    let x = 5;
+    match x {
+        ref mr => println!("Got a reference to {}", mr),
+    }
+    let mut x = 5;
+    match x {
+        ref mut mr => println!("Got a mutable reference to {}", mr),
+    }
 }
