@@ -28,6 +28,33 @@ impl Circle {
     }
 }
 
+struct CircleBuilder {
+    x: f64,
+    y: f64,
+    radius: f64
+}
+
+impl CircleBuilder {
+    fn new() -> CircleBuilder {
+        CircleBuilder{ x: 0.0, y: 0.0, radius: 1.0 }
+    }
+    fn x(&mut self, coordinate: f64) -> &mut CircleBuilder {
+        self.x = coordinate;
+        self
+    }
+    fn y(&mut self, coordinate: f64) -> &mut CircleBuilder {
+        self.y = coordinate;
+        self
+    }
+    fn radius(&mut self, coordinate: f64) -> &mut CircleBuilder {
+        self.radius = coordinate;
+        self
+    }
+    fn finalize(&self) -> Circle {
+        Circle {x: self.x, y: self.y, radius: self.radius}
+    }
+}
+
 fn main() {
     let c = Circle {
         x: 0.0,
@@ -42,4 +69,11 @@ fn main() {
     let mut c1 = Circle::new(0.0, 0.0, 2.0);
     c1.mutable_reference();
     println!("{}", c1.x);
+
+    let c2 = CircleBuilder::new()
+            .x(1.0)
+            .y(2.0)
+            .radius(2.0)
+            .finalize();
+    println!("{}", c2.area());
 }
