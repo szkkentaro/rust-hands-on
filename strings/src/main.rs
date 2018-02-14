@@ -21,5 +21,17 @@ fn main() {
     let x = "Hey";
     take_slice(x);
 
+    // Indexing
+    let skytree = "東京スカイツリー";
+    for b in skytree.as_bytes() {
+        print!("{}, ", b);
+    }
+    println!("");
+    for c in skytree.chars() {
+        print!("{}, ", c);
+    }
+
+    let tokyo = &skytree[0..6]; // it refeters bytes length
+    println!("{}", tokyo);
 }
 
