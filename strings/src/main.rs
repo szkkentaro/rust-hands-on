@@ -33,5 +33,15 @@ fn main() {
 
     let tokyo = &skytree[0..6]; // it refeters bytes length
     println!("{}", tokyo);
+
+    // concat String + &str
+    let good = "good".to_string();
+    let morning = "morning";
+    println!("{}", good + morning);
+
+    // concat String + String
+    let good = "good".to_string();
+    let morning = "morning".to_string(); // it will transform &str forcely
+    println!("{}", good + &morning);
 }
 
