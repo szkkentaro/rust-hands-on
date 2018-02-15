@@ -17,4 +17,17 @@ fn main() {
         println!("{}, {}", key, val);
     }
 
+    // get value from hash
+    let k = String::from("key");
+    let v = String::from("val");
+    let mut map = HashMap::new();
+    map.insert(k, v);
+    // println!("{}, {}", k, v); // throw error : value used here after move
+
+    let key = String::from("key");
+    let foo = String::from("foo");
+    // has key
+    println!("{}", map.get(&key).unwrap());
+    // does not have key
+    println!("{:?}", map.get(&foo));
 }
