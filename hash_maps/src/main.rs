@@ -30,4 +30,25 @@ fn main() {
     println!("{}", map.get(&key).unwrap());
     // does not have key
     println!("{:?}", map.get(&foo));
+
+    // update hash
+    let mut scores = HashMap::new();
+    scores.insert(String::from("Blue"), 10);
+
+    // update score with Yellow, 50
+    scores.entry(String::from("Yellow")).or_insert(50);
+    // does not update score because score has Blue key already
+    scores.entry(String::from("Blue")).or_insert(50);
+    println!("{:?}", scores);
+
+    let txt = "hello world wonderful world";
+    let mut map = HashMap::new();
+
+    for w in txt.split_whitespace() {
+        let count = map.entry(w).or_insert(0);
+        *count += 1;
+    }
+    println!("{:?}", map);
+
+
 }
