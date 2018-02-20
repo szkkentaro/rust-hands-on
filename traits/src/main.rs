@@ -53,6 +53,35 @@ fn foo<T: Clone + Debug>(x: T) {
     println!("{:?}", x);
 }
 
+// where syntax
+fn bar<T, K>(x: T, y: K)
+    where T: Clone,
+          K: Clone + Debug {
+    x.clone();
+    y.clone();
+    println!("{:?}", y);
+}
+
+trait ConvertTo<Output> {
+    fn convert(&self) -> Output;
+}
+
+impl ConvertTo<i64> for i32 {
+    fn convert(&self) -> i64 { *self as i64 }
+}
+
+// can call T == i32
+fn normal<T: ConvertTo<i64>>(x: &T) -> i64 {
+    x.convert()
+}
+
+// can call T == i64
+fn inverse<T>() -> T
+    // use as if this is ConvertTo<i64>
+    where i32: ConvertTo<T> {
+    42.convert()
+}
+
 fn main() {
     let c = Circle {x: 1.0, y: 1.0, radius: 1.0};
     println!("c.area() is {}", c.area());
@@ -84,4 +113,9 @@ fn main() {
     assert!(!r.is_squea());
     
     foo("bar");
+    bar("hello", "world");
+
+    // where
+    println!("{}", normal(&10));
+    println!("{}", inverse());
 }
