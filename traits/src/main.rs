@@ -86,13 +86,13 @@ fn inverse<T>() -> T
 }
 
 // use default
-trait Foo {
+trait Default {
     fn is_valid(&self) -> bool;
     fn is_invalid(&self) -> bool { !self.is_valid() }
 }
 
 struct UseDefault;
-impl Foo for UseDefault {
+impl Default for UseDefault {
     fn is_valid(&self) -> bool {
         println!("Called UseDefalt is valid");
         true
@@ -101,7 +101,7 @@ impl Foo for UseDefault {
 }
 
 struct OverrideDefault;
-impl Foo for OverrideDefault {
+impl Default for OverrideDefault {
     fn is_valid(&self) -> bool {
         println!("Called OversrideDefault.is_valid");
         true
@@ -112,6 +112,22 @@ impl Foo for OverrideDefault {
     }
 }
 
+// inherite
+trait Foo {
+    fn foo(&self);
+}
+
+trait FooBar : Foo {
+    fn foobar(&self);
+}
+
+struct Baz;
+impl Foo for Baz {
+    fn foo(&self) { println!("foo") }
+}
+impl FooBar for Baz {
+    fn foobar(&self) { println!("foobar") }
+}
 
 fn main() {
     let c = Circle {x: 1.0, y: 1.0, radius: 1.0};
@@ -155,4 +171,10 @@ fn main() {
 
     let over = OverrideDefault;
     assert!(over.is_invalid());
+
+    // inherite
+    let baz = Baz;
+    baz.foo();
+    baz.foobar();
 }
+
