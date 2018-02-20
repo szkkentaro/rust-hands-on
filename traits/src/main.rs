@@ -1,4 +1,6 @@
 #![allow(dead_code)]
+use std::fmt::Debug;
+
 trait HasArea {
     fn area(&self) -> f64;
 }
@@ -44,6 +46,13 @@ impl <T: PartialEq> Rectangle<T> {
     }
 }
 
+
+// multiple trait bound
+fn foo<T: Clone + Debug>(x: T) {
+    x.clone();
+    println!("{:?}", x);
+}
+
 fn main() {
     let c = Circle {x: 1.0, y: 1.0, radius: 1.0};
     println!("c.area() is {}", c.area());
@@ -74,4 +83,5 @@ fn main() {
     r.width = 42;
     assert!(!r.is_squea());
     
+    foo("bar");
 }
