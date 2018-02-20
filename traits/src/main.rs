@@ -62,20 +62,23 @@ fn bar<T, K>(x: T, y: K)
     println!("{:?}", y);
 }
 
-trait ConvertTo<Output> {
-    fn convert(&self) -> Output;
+trait ConvertTo<T> {
+    fn convert(&self) -> T;
 }
 
 impl ConvertTo<i64> for i32 {
-    fn convert(&self) -> i64 { *self as i64 }
+    fn convert(&self) -> i64 {
+        *self as i64
+    }
 }
 
-// can call T == i32
-fn normal<T: ConvertTo<i64>>(x: &T) -> i64 {
+// can call when T == i32
+fn normal<T>(x: &T) -> i64
+    where T: ConvertTo<i64> {
     x.convert()
 }
 
-// can call T == i64
+// can call when T == i64
 fn inverse<T>() -> T
     // use as if this is ConvertTo<i64>
     where i32: ConvertTo<T> {
