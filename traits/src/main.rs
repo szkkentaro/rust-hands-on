@@ -85,6 +85,34 @@ fn inverse<T>() -> T
     42.convert()
 }
 
+// use default
+trait Foo {
+    fn is_valid(&self) -> bool;
+    fn is_invalid(&self) -> bool { !self.is_valid() }
+}
+
+struct UseDefault;
+impl Foo for UseDefault {
+    fn is_valid(&self) -> bool {
+        println!("Called UseDefalt is valid");
+        true
+    }
+    // there is no need to impl is_invalid()
+}
+
+struct OverrideDefault;
+impl Foo for OverrideDefault {
+    fn is_valid(&self) -> bool {
+        println!("Called OversrideDefault.is_valid");
+        true
+    }
+    fn is_invalid(&self) -> bool {
+        println!("Called OversrideDefault.is_invalid");
+        true
+    }
+}
+
+
 fn main() {
     let c = Circle {x: 1.0, y: 1.0, radius: 1.0};
     println!("c.area() is {}", c.area());
@@ -121,4 +149,10 @@ fn main() {
     // where
     println!("{}", normal(&10));
     println!("{}", inverse());
+
+    let default = UseDefault;
+    assert!(!default.is_invalid());
+
+    let over = OverrideDefault;
+    assert!(over.is_invalid());
 }
