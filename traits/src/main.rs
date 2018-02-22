@@ -129,6 +129,9 @@ impl FooBar for Baz {
     fn foobar(&self) { println!("foobar") }
 }
 
+#[derive(Debug)]
+struct DeriveSample;
+
 fn main() {
     let c = Circle {x: 1.0, y: 1.0, radius: 1.0};
     println!("c.area() is {}", c.area());
@@ -176,5 +179,20 @@ fn main() {
     let baz = Baz;
     baz.foo();
     baz.foobar();
+
+    // derive
+    println!("{:?}", DeriveSample);
+    /* 
+    derive is limitted to use methods below
+        Clone
+        Copy
+        Debug
+        Default
+        Eq
+        Hash
+        Ord
+        PartialEq
+        PartialOrd
+    */
 }
 
