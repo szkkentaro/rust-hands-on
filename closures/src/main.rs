@@ -52,4 +52,16 @@ fn main() {
     let answer = call_with_two(&add_two);
     assert_eq!(4, answer);
     
+    // return closure
+    // point
+    // - use Box because of lifetime problem
+    // - use move for closure, because it has borrow num
+    fn factory() -> Box<Fn(i32) -> i32> {
+        let num = 5;
+        Box::new(move |x| x + num)
+    }
+    let f = factory();
+    let answer = f(1);
+    assert_eq!(6, answer);
+    
 }
