@@ -29,4 +29,19 @@ fn main() {
     // because of 5 has Copy method
     assert_eq!(5, foo);
 
+    // closure as a arg, then this func is static dispatched
+    fn call_with_one<F>(some_closure: F) -> i32
+        where F : Fn(i32) -> i32 {
+        some_closure(1)
+    }
+    let answer = call_with_one(|x| x + 2);
+    assert_eq!(3, answer);
+
+    // closure as a arg, then this func is dynamic dispatched
+    fn call_with_two(some_closuer: &Fn(i32) -> i32) -> i32 {
+        some_closuer(2)
+    }
+    let answer = call_with_two(&|x:i32| x + 2);
+    assert_eq!(4, answer);
+    
 }
