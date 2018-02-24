@@ -43,5 +43,13 @@ fn main() {
     }
     let answer = call_with_two(&|x:i32| x + 2);
     assert_eq!(4, answer);
+
+
+    // the pointer of closuer func is used as a arg
+    fn add_two(i: i32) -> i32 {
+        i + 2
+    }
+    let answer = call_with_two(&add_two);
+    assert_eq!(4, answer);
     
 }
