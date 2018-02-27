@@ -4,4 +4,10 @@ fn main() {
 
     static BAR: &'static str = "Bar";
     assert_eq!("Bar", BAR);
+
+    static mut N: i32 = 10;
+    unsafe {
+        N += 1;
+        println!("{}", N);
+    }
 }
