@@ -9,6 +9,11 @@ fn main() {
     let two_hundred = -56i8 as u8;
     println!("{}, {}, {}", one, at_sign, two_hundred);
 
+    // pointer casts
+    let a = 300 as *const char;
+    let b = a as u32;
+    println!("{:?}, {}", a, b);
+
     // transnute is danger
 
 }
