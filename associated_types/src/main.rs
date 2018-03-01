@@ -8,9 +8,11 @@
 
 struct Edge;
 struct Node;
+
 struct MyGraph;
 
 // trait with associated type
+
 trait Graph {
     type N;
     type E;
@@ -39,4 +41,9 @@ fn distance<G> (_graph: &G) -> u32 {
 fn main() {
     let g = MyGraph;
     println!("{}", distance(&g));
+
+    // trait object with associated types
+    let obj = Box::new(g) as Box<Graph<N=Node, E=Edge>>;
+    let n = &Node;
+    println!("{}", obj.has_edge(n, n));
 }
