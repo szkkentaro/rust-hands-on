@@ -18,4 +18,10 @@ mod tests {
     fn it_works_other() {
         assert_eq!("Hello", "World");
     }
+
+    #[test]
+    #[ignore]
+    fn expensive_test() {
+        assert!(true);
+    }
 }
