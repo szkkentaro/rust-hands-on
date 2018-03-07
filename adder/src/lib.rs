@@ -1,3 +1,24 @@
+//! This block is a module level document.
+//!
+//! `adder` crate offer add function.
+//!
+//! # Example
+//!
+//! ```
+//! assert_eq!(2, adder::add_one(1));
+//! ```
+
+/// This block is function level comment.
+///
+/// This fn offer to add one
+///
+/// # Example
+///
+/// ```
+/// use adder::add_one;
+///
+/// assert_eq!(2, adder::add_one(1));
+/// ```
 pub fn add_one(x: i32) -> i32 {
     x + 1
 }
