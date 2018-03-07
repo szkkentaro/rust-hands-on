@@ -1,0 +1,6 @@
+[package]
+name = "conditional_compilation"
+version = "0.1.0"
+authors = ["Kentaro SUZUKI <kentarock@gmail.com>"]
+
+[dependencies]
