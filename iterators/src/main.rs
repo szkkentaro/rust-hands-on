@@ -42,4 +42,9 @@ fn main() {
     for num in nums.iter() {
         println!("{}", num);
     }
+
+    // take() returns iterator
+    for i in (4..).take(6) {
+        println!("{}", i);
+    }
 }
