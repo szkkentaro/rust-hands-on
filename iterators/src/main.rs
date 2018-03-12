@@ -1,3 +1,4 @@
+#[allow(unused_variables)]
 fn main() {
     let mut range = 0..10;
     loop {
@@ -20,4 +21,7 @@ fn main() {
     for num in &nums {
         println!("{}", num);
     }
+
+    // consumer with type placeholder
+    let one_to_one_hundred = (1..101).collect::<Vec<_>>();
 }
