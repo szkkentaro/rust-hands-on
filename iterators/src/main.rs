@@ -43,8 +43,13 @@ fn main() {
         println!("{}", num);
     }
 
-    // take() returns iterator
+    // iterator adaptor returns iterator
     for i in (4..).take(6) {
+        println!("{}", i);
+    }
+
+    // filter iterator adaptor
+    for i in (1..100).filter(|&x| x % 10 == 0) {
         println!("{}", i);
     }
 }
