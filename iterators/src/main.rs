@@ -36,4 +36,10 @@ fn main() {
     // fold consumer
     let sum = (1..11).fold(0, |sum, x| sum + x);
     println!("{}", sum);
+
+    // iterator
+    let nums = vec![1, 2, 3];
+    for num in nums.iter() {
+        println!("{}", num);
+    }
 }
