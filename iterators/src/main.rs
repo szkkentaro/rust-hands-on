@@ -32,4 +32,8 @@ fn main() {
         Some(_) => println!("Found a match!"),
         None => println!("No match found"),
     }
+
+    // fold consumer
+    let sum = (1..11).fold(0, |sum, x| sum + x);
+    println!("{}", sum);
 }
