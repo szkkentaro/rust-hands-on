@@ -52,4 +52,14 @@ fn main() {
     for i in (1..100).filter(|&x| x % 10 == 0) {
         println!("{}", i);
     }
+    // combination
+    let nums = (1..)
+        .filter(|&x| x % 2 == 0)
+        .filter(|&x| x % 3 == 0)
+        .take(5)
+        .collect::<Vec<i32>>();
+
+    for num in &nums {
+        println!("{}", num);
+    }
 }
