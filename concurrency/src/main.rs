@@ -41,4 +41,11 @@ fn main() {
     for _ in 0..10 {
         println!("{:?}", rx.recv().unwrap());
     }
+
+    let handle = thread::spawn(|| {
+        panic!("oops!");
+    });
+
+    let result = handle.join();
+    assert!(result.is_err());
 }
