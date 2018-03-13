@@ -1,6 +1,16 @@
 use std::thread;
+use std::sync::{Arc, Mutex};
+use std::time::Duration;
 
 fn main() {
-    let handle = thread::spawn(|| "Hello from thread!");
-    println!("{}", handle.join().unwrap());
+    let data = Arc::new(Mutex::new(vec![1, 2, 3]));
+
+    for i in 0..3 {
+        let data = data.clone();
+        thread::spawn(move || {
+            let mut data = data.lock().unwrap();
+            data[i] += 1;
+        });
+    }
+    thread::sleep(Duration::from_millis(50));
 }
