@@ -19,10 +19,13 @@ fn find(haystack: &str, needle: char) -> Option<usize> {
 }
 
 fn extension_explicit(file_name: &str) -> Option<&str> {
-    match find(file_name, '.') {
-        None => None,
-        Some(i) => Some(&file_name[i + 1..]),
-    }
+    // match find(file_name, '.') {
+    //     None => None,
+    //     Some(i) => Some(&file_name[i + 1..]),
+    // }
+
+    // use map conbinator
+    find(file_name, '.').map(|i| &file_name[i + 1..])
 }
 
 fn main() {
