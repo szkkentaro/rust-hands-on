@@ -19,11 +19,13 @@ fn find(haystack: &str, needle: char) -> Option<usize> {
 }
 
 fn extension_explicit(file_name: &str) -> Option<&str> {
-    // match find(file_name, '.') {
-    //     None => None,
-    //     Some(i) => Some(&file_name[i + 1..]),
-    // }
+    match find(file_name, '.') {
+        None => None,
+        Some(i) => Some(&file_name[i + 1..]),
+    }
+}
 
+fn extension(file_name: &str) -> Option<&str> {
     // use map conbinator
     find(file_name, '.').map(|i| &file_name[i + 1..])
 }
@@ -45,4 +47,9 @@ fn main() {
     }
 
     println!("{:?}", extension_explicit(file_name));
+
+    let csv_file_name = "foobar.csv";
+    let file_name = "foobar";
+    assert_eq!(extension(csv_file_name).unwrap_or("rs"), "csv");
+    assert_eq!(extension(file_name).unwrap_or("rs"), "rs");
 }
