@@ -18,6 +18,13 @@ fn find(haystack: &str, needle: char) -> Option<usize> {
     None
 }
 
+fn extension_explicit(file_name: &str) -> Option<&str> {
+    match find(file_name, '.') {
+        None => None,
+        Some(i) => Some(&file_name[i + 1..]),
+    }
+}
+
 fn main() {
     // The Basics
     // guess(11);
@@ -33,4 +40,6 @@ fn main() {
         None => println!("No file extension found."),
         Some(i) => println!("File extension: {}", &file_name[i + 1..]),
     }
+
+    println!("{:?}", extension_explicit(file_name));
 }
