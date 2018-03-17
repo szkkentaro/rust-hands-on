@@ -1,6 +1,8 @@
 #[allow(unused_imports)]
 use std::env;
 
+use std::num::ParseIntError;
+
 #[allow(unused_variables, dead_code)]
 fn guess(i: i32) -> bool {
     if i < 0 || i > 10 {
@@ -55,6 +57,10 @@ fn file_path_ext(file_path: &str) -> Option<&str> {
     file_name(file_path).and_then(extension)
 }
 
+fn double_number(num_str: &str) -> Result<i32, ParseIntError> {
+    num_str.parse::<i32>().map(|x| x * 2)
+}
+
 fn main() {
     // The Basics
     // guess(11);
@@ -81,4 +87,9 @@ fn main() {
     let file_path = "/path/to/file.md";
     println!("{:?}", file_path_ext_explicite(file_path));
     println!("{:?}", file_path_ext(file_path));
+
+    match double_number("10") {
+        Ok(n) => assert_eq!(n, 20),
+        Err(err) => println!("{:?}", err),
+    }
 }
