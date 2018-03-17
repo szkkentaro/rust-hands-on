@@ -30,6 +30,31 @@ fn extension(file_name: &str) -> Option<&str> {
     find(file_name, '.').map(|i| &file_name[i + 1..])
 }
 
+fn file_path_ext_explicite(file_path: &str) -> Option<&str> {
+    match file_name(file_path) {
+        None => None,
+        Some(name) => match extension(name) {
+            None => None,
+            Some(ext) => Some(ext),
+        },
+    }
+}
+
+#[allow(unused_variables)]
+fn file_name(file_path: &str) -> Option<&str> {
+    let mut i: usize = 0;
+    for (offset, c) in file_path.char_indices() {
+        if '/' == c {
+            i = offset;
+        }
+    }
+    Some(&file_path[i + 1..])
+}
+
+fn file_path_ext(file_path: &str) -> Option<&str> {
+    file_name(file_path).and_then(extension)
+}
+
 fn main() {
     // The Basics
     // guess(11);
@@ -52,4 +77,8 @@ fn main() {
     let file_name = "foobar";
     assert_eq!(extension(csv_file_name).unwrap_or("rs"), "csv");
     assert_eq!(extension(file_name).unwrap_or("rs"), "rs");
+
+    let file_path = "/path/to/file.md";
+    println!("{:?}", file_path_ext_explicite(file_path));
+    println!("{:?}", file_path_ext(file_path));
 }
