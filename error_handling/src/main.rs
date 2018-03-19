@@ -61,6 +61,13 @@ fn double_number(num_str: &str) -> Result<i32, ParseIntError> {
     num_str.parse::<i32>().map(|x| x * 2)
 }
 
+fn double_arg(mut argv: env::Args) -> Result<i32, String> {
+    argv.nth(1)
+        .ok_or("Please give at least one arg".to_owned())
+        .and_then(|arg| arg.parse::<i32>().map_err(|err| err.to_string()))
+        .map(|n| n * 2)
+}
+
 fn main() {
     // The Basics
     // guess(11);
@@ -91,5 +98,18 @@ fn main() {
     match double_number("10") {
         Ok(n) => assert_eq!(n, 20),
         Err(err) => println!("{:?}", err),
+    }
+
+    /*
+    $ error_handling/target/debug/error_handling 10
+        File extension: rs
+        Some("rs")
+        Some("md")
+        Some("md")
+        20
+    */
+    match double_arg(env::args()) {
+        Ok(n) => println!("{}", n),
+        Err(err) => println!("with error: {}", err),
     }
 }
