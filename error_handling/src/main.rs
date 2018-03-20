@@ -2,6 +2,9 @@
 use std::env;
 
 use std::num::ParseIntError;
+use std::path::Path;
+use std::io::Read;
+use std::fs::File;
 
 #[allow(unused_variables, dead_code)]
 fn guess(i: i32) -> bool {
@@ -68,6 +71,14 @@ fn double_arg(mut argv: env::Args) -> Result<i32, String> {
         .map(|n| n * 2)
 }
 
+fn file_double<P: AsRef<Path>>(file_name: P) -> i32 {
+    let mut file = File::open(file_name).unwrap();
+    let mut contents = String::new();
+    file.read_to_string(&mut contents).unwrap();
+    let n: i32 = contents.trim().parse().unwrap();
+    n * 2
+}
+
 fn main() {
     // The Basics
     // guess(11);
@@ -112,4 +123,17 @@ fn main() {
         Ok(n) => println!("{}", n),
         Err(err) => println!("with error: {}", err),
     }
+
+    /*
+    $ cd path/to/debug
+      ./error_handling 10
+      File extension: rs
+        Some("rs")
+        Some("md")
+        Some("md")
+        20
+        4
+    */
+    let doubled = file_double("foobar");
+    println!("{}", doubled);
 }
