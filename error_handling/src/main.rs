@@ -72,18 +72,13 @@ fn double_arg(mut argv: env::Args) -> Result<i32, String> {
 }
 
 fn file_double<P: AsRef<Path>>(file_name: P) -> Result<i32, String> {
-    let mut file = match File::open(file_name) {
-        Ok(file) => file,
-        Err(err) => return Err(err.to_string()),
-    };
+    let mut file = try!(File::open(file_name).map_err(|e| e.to_string()));
     let mut contents = String::new();
-    if let Err(err) = file.read_to_string(&mut contents) {
-        return Err(err.to_string());
-    }
-    let n: i32 = match contents.trim().parse() {
-        Ok(n) => n,
-        Err(err) => return Err(err.to_string()),
-    };
+    try!(
+        file.read_to_string(&mut contents)
+            .map_err(|e| e.to_string())
+    );
+    let n = try!(contents.trim().parse::<i32>().map_err(|e| e.to_string()));
     Ok(n * 2)
 }
 
