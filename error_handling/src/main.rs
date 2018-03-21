@@ -6,6 +6,9 @@ use std::path::Path;
 use std::io::Read;
 use std::fs::File;
 
+use std::io;
+use std::num;
+
 #[allow(unused_variables, dead_code)]
 fn guess(i: i32) -> bool {
     if i < 0 || i > 10 {
@@ -71,15 +74,18 @@ fn double_arg(mut argv: env::Args) -> Result<i32, String> {
         .map(|n| n * 2)
 }
 
-fn file_double<P: AsRef<Path>>(file_name: P) -> Result<i32, String> {
-    let mut file = try!(File::open(file_name).map_err(|e| e.to_string()));
+fn file_double<P: AsRef<Path>>(file_name: P) -> Result<i32, CliError> {
+    let mut file = try!(File::open(file_name).map_err(CliError::Io));
     let mut contents = String::new();
-    try!(
-        file.read_to_string(&mut contents)
-            .map_err(|e| e.to_string())
-    );
-    let n = try!(contents.trim().parse::<i32>().map_err(|e| e.to_string()));
+    try!(file.read_to_string(&mut contents).map_err(CliError::Io));
+    let n = try!(contents.trim().parse::<i32>().map_err(CliError::Parse));
     Ok(n * 2)
+}
+
+#[derive(Debug)]
+enum CliError {
+    Io(io::Error),
+    Parse(num::ParseIntError),
 }
 
 fn main() {
@@ -128,17 +134,26 @@ fn main() {
     }
 
     /*
+
     $ cd path/to/debug
       ./error_handling 10
+
       File extension: rs
         Some("rs")
         Some("md")
         Some("md")
         20
         4
+
     */
+
+    // Throw Error like below if it can not find file name.
+    //   Error Io(Os { code: 2, kind: NotFound, message: "No such file or directory" })
+
+    // Throw Error like below if it can not parse file contents to int.
+    //   Error Parse(ParseIntError { kind: InvalidDigit })
     match file_double("foobar") {
         Ok(n) => println!("{}", n),
-        Err(err) => println!("{}", err),
+        Err(err) => println!("Error {:?}", err),
     }
 }
