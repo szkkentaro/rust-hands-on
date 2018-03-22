@@ -9,6 +9,18 @@ use std::fs::File;
 use std::io;
 use std::num;
 
+use std::fmt::{Debug, Display};
+
+use std::fmt;
+use std::error;
+
+trait Error: Debug + Display {
+    fn description(&self) -> &str;
+    fn cause(&self) -> Option<&Error> {
+        None
+    }
+}
+
 #[allow(unused_variables, dead_code)]
 fn guess(i: i32) -> bool {
     if i < 0 || i > 10 {
@@ -86,6 +98,31 @@ fn file_double<P: AsRef<Path>>(file_name: P) -> Result<i32, CliError> {
 enum CliError {
     Io(io::Error),
     Parse(num::ParseIntError),
+}
+
+impl fmt::Display for CliError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            CliError::Io(ref err) => write!(f, "IO Error: {}", err),
+            CliError::Parse(ref err) => write!(f, "Parse Error: {}", err),
+        }
+    }
+}
+
+impl error::Error for CliError {
+    fn description(&self) -> &str {
+        match *self {
+            CliError::Io(ref err) => err.description(),
+            CliError::Parse(ref err) => err.description(),
+        }
+    }
+
+    fn cause(&self) -> Option<&error::Error> {
+        match *self {
+            CliError::Io(ref err) => Some(err),
+            CliError::Parse(ref err) => Some(err),
+        }
+    }
 }
 
 fn main() {
