@@ -98,6 +98,7 @@ fn file_double<P: AsRef<Path>>(file_name: P) -> Result<i32, CliError> {
 enum CliError {
     Io(io::Error),
     Parse(num::ParseIntError),
+    ParseFloat(num::ParseFloatError),
 }
 
 impl fmt::Display for CliError {
@@ -105,6 +106,7 @@ impl fmt::Display for CliError {
         match *self {
             CliError::Io(ref err) => write!(f, "IO Error: {}", err),
             CliError::Parse(ref err) => write!(f, "Parse Error: {}", err),
+            CliError::ParseFloat(ref err) => write!(f, "ParseFloat Error: {}", err),
         }
     }
 }
@@ -114,6 +116,7 @@ impl error::Error for CliError {
         match *self {
             CliError::Io(ref err) => err.description(),
             CliError::Parse(ref err) => err.description(),
+            CliError::ParseFloat(ref err) => err.description(),
         }
     }
 
@@ -121,6 +124,7 @@ impl error::Error for CliError {
         match *self {
             CliError::Io(ref err) => Some(err),
             CliError::Parse(ref err) => Some(err),
+            CliError::ParseFloat(ref err) => Some(err),
         }
     }
 }
@@ -134,6 +138,12 @@ impl From<io::Error> for CliError {
 impl From<num::ParseIntError> for CliError {
     fn from(err: num::ParseIntError) -> CliError {
         CliError::Parse(err)
+    }
+}
+
+impl From<num::ParseFloatError> for CliError {
+    fn from(err: num::ParseFloatError) -> CliError {
+        CliError::ParseFloat(err)
     }
 }
 
