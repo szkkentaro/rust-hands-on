@@ -125,6 +125,26 @@ impl error::Error for CliError {
     }
 }
 
+impl From<io::Error> for CliError {
+    fn from(err: io::Error) -> CliError {
+        CliError::Io(err)
+    }
+}
+
+impl From<num::ParseIntError> for CliError {
+    fn from(err: num::ParseIntError) -> CliError {
+        CliError::Parse(err)
+    }
+}
+
+fn file_double_verbose<P: AsRef<Path>>(file_name: P) -> Result<i32, CliError> {
+    let mut file = try!(File::open(file_name));
+    let mut contents = String::new();
+    try!(file.read_to_string(&mut contents));
+    let n: i32 = try!(contents.trim().parse());
+    Ok(n * 2)
+}
+
 fn main() {
     // The Basics
     // guess(11);
@@ -190,6 +210,11 @@ fn main() {
     // Throw Error like below if it can not parse file contents to int.
     //   Error Parse(ParseIntError { kind: InvalidDigit })
     match file_double("foobar") {
+        Ok(n) => println!("{}", n),
+        Err(err) => println!("Error {:?}", err),
+    }
+
+    match file_double_verbose("foobar") {
         Ok(n) => println!("{}", n),
         Err(err) => println!("Error {:?}", err),
     }
