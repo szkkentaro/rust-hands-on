@@ -6,6 +6,7 @@ use getopts::Options;
 use std::env;
 use std::fs;
 use std::path::Path;
+use std::error::Error;
 
 #[derive(Debug, RustcDecodable)]
 struct Row {
@@ -31,12 +32,15 @@ fn print_usage(program: &str, opts: Options) {
     );
 }
 
-fn search<P: AsRef<Path>>(file_path: P, city: &str) -> Vec<PopulationCount> {
+fn search<P: AsRef<Path>>(
+    file_path: P,
+    city: &str,
+) -> Result<Vec<PopulationCount>, Box<Error + Send + Sync>> {
     let mut found = vec![];
-    let file = fs::File::open(file_path).unwrap();
+    let file = try!(fs::File::open(file_path));
     let mut rdr = csv::Reader::from_reader(file);
     for row in rdr.decode::<Row>() {
-        let row = row.unwrap();
+        let row = try!(row);
         match row.population {
             None => {}
             Some(count) => if row.city == city {
@@ -48,8 +52,14 @@ fn search<P: AsRef<Path>>(file_path: P, city: &str) -> Vec<PopulationCount> {
             },
         }
     }
-    found
+    if found.is_empty() {
+        Err(From::from("No mating cities with a population were found."))
+    } else {
+        Ok(found)
+    }
 }
+
+// impl<'a, 'b> From<&'b str> for Box<Error + Send + Sync + 'a>
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -72,9 +82,15 @@ fn main() {
     let data_path = Path::new(&data_file);
     let city = args[2].clone();
 
-    for pop in search(&data_path, &city) {
-        println!("{}, {}, {}", pop.city, pop.country, pop.count);
+    match search(&data_path, &city) {
+        Ok(pops) => for pop in pops {
+            println!("{}, {}, {}", pop.city, pop.country, pop.count);
+        },
+        Err(err) => println!("{}", err),
     }
+    // for pop in search(&data_path, &city) {
+    //     println!("{}, {}, {}", pop.city, pop.country, pop.count);
+    // }
 
     // let file = fs::File::open(data_path).unwrap();
     // let mut rdr = csv::Reader::from_reader(file);
