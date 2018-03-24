@@ -7,6 +7,7 @@ use std::env;
 use std::fs;
 use std::path::Path;
 use std::error::Error;
+use std::io;
 
 #[derive(Debug, RustcDecodable)]
 struct Row {
@@ -28,17 +29,22 @@ struct PopulationCount {
 fn print_usage(program: &str, opts: Options) {
     println!(
         "{}",
-        opts.usage(&format!("Usage: {} [options] <data-path> <city>", program))
+        opts.usage(&format!("Usage: {} [options] <city>", program))
     );
 }
 
 fn search<P: AsRef<Path>>(
-    file_path: P,
+    file_path: &Option<P>,
     city: &str,
 ) -> Result<Vec<PopulationCount>, Box<Error + Send + Sync>> {
     let mut found = vec![];
-    let file = try!(fs::File::open(file_path));
-    let mut rdr = csv::Reader::from_reader(file);
+    let input: Box<io::Read> = match *file_path {
+        None => Box::new(io::stdin()),
+        Some(ref file_path) => Box::new(try!(fs::File::open(file_path))),
+    };
+    let mut rdr = csv::Reader::from_reader(input);
+    // let file = try!(fs::File::open(file_path));
+    // let mut rdr = csv::Reader::from_reader(file);
     for row in rdr.decode::<Row>() {
         let row = try!(row);
         match row.population {
@@ -66,6 +72,12 @@ fn main() {
     let program = args[0].clone();
 
     let mut opts = Options::new();
+    opts.optopt(
+        "f",
+        "file",
+        "Choose an input file, instead of using STDIN.",
+        "NAME",
+    );
     opts.optflag("h", "help", "Show this usage message.");
 
     let matches = match opts.parse(&args[1..]) {
@@ -78,22 +90,41 @@ fn main() {
         return;
     }
 
-    let data_file = args[1].clone();
-    let data_path = Path::new(&data_file);
-    let city = args[2].clone();
+    let file = matches.opt_str("f");
+    let data_file = file.as_ref().map(Path::new);
+    let city = if !matches.free.is_empty() {
+        matches.free[0].clone()
+    } else {
+        print_usage(&program, opts);
+        return;
+    };
 
-    match search(&data_path, &city) {
+    // $ cat ~/Downloads/uscitiespop.csv | ./target/debug/city-pop "alexander city"
+    // alexander city, us, 14993
+
+    match search(&data_file, &city) {
         Ok(pops) => for pop in pops {
             println!("{}, {}, {}", pop.city, pop.country, pop.count);
         },
         Err(err) => println!("{}", err),
     }
-    // for pop in search(&data_path, &city) {
-    //     println!("{}, {}, {}", pop.city, pop.country, pop.count);
+
+    // let data_file = args[1].clone();
+    // let data_path = Path::new(&data_file);
+    // let city = args[2].clone();
+
+    // match search(&data_path, &city) {
+    //     Ok(pops) => for pop in pops {
+    //         println!("{}, {}, {}", pop.city, pop.country, pop.count);
+    //     },
+    //     Err(err) => println!("{}", err),
     // }
 
     // let file = fs::File::open(data_path).unwrap();
     // let mut rdr = csv::Reader::from_reader(file);
+    // for pop in search(&data_file, &city) {
+    //     println!("{}, {}, {}", pop.city, pop.country, pop.count);
+    // }
 
     // $ ./target/debug/city-pop ~/Downloads/uscitiespop.csv "alexander city"
     // alexander city, us: 14993
