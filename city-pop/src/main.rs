@@ -8,6 +8,7 @@ use std::fs;
 use std::path::Path;
 use std::error::Error;
 use std::io;
+use std::fmt;
 
 #[derive(Debug, RustcDecodable)]
 struct Row {
@@ -36,7 +37,7 @@ fn print_usage(program: &str, opts: Options) {
 fn search<P: AsRef<Path>>(
     file_path: &Option<P>,
     city: &str,
-) -> Result<Vec<PopulationCount>, Box<Error + Send + Sync>> {
+) -> Result<Vec<PopulationCount>, CliError> {
     let mut found = vec![];
     let input: Box<io::Read> = match *file_path {
         None => Box::new(io::stdin()),
@@ -59,14 +60,49 @@ fn search<P: AsRef<Path>>(
         }
     }
     if found.is_empty() {
-        Err(From::from("No mating cities with a population were found."))
+        Err(CliError::NotFound)
     } else {
         Ok(found)
     }
 }
 
-// impl<'a, 'b> From<&'b str> for Box<Error + Send + Sync + 'a>
+#[derive(Debug)]
+enum CliError {
+    Io(io::Error),
+    Csv(csv::Error),
+    NotFound,
+}
 
+impl fmt::Display for CliError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            CliError::Io(ref err) => err.fmt(f),
+            CliError::Csv(ref err) => err.fmt(f),
+            CliError::NotFound => write!(f, "No matching cities with a population were found."),
+        }
+    }
+}
+impl Error for CliError {
+    fn description(&self) -> &str {
+        match *self {
+            CliError::Io(ref err) => err.description(),
+            CliError::Csv(ref err) => err.description(),
+            CliError::NotFound => "not found",
+        }
+    }
+}
+
+impl From<io::Error> for CliError {
+    fn from(err: io::Error) -> CliError {
+        CliError::Io(err)
+    }
+}
+
+impl From<csv::Error> for CliError {
+    fn from(err: csv::Error) -> CliError {
+        CliError::Csv(err)
+    }
+}
 fn main() {
     let args: Vec<String> = env::args().collect();
     let program = args[0].clone();
