@@ -9,6 +9,7 @@ use std::path::Path;
 use std::error::Error;
 use std::io;
 use std::fmt;
+use std::process;
 
 #[derive(Debug, RustcDecodable)]
 struct Row {
@@ -115,6 +116,7 @@ fn main() {
         "NAME",
     );
     opts.optflag("h", "help", "Show this usage message.");
+    opts.optflag("q", "quiet", "Silencies errors and warnings.");
 
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => m,
@@ -125,6 +127,8 @@ fn main() {
         print_usage(&program, opts);
         return;
     }
+
+    let quiet = matches.opt_present("q");
 
     let file = matches.opt_str("f");
     let data_file = file.as_ref().map(Path::new);
@@ -139,10 +143,11 @@ fn main() {
     // alexander city, us, 14993
 
     match search(&data_file, &city) {
+        Err(CliError::NotFound) if quiet => process::exit(1),
+        Err(err) => println!("{}", err),
         Ok(pops) => for pop in pops {
             println!("{}, {}, {}", pop.city, pop.country, pop.count);
         },
-        Err(err) => println!("{}", err),
     }
 
     // let data_file = args[1].clone();
