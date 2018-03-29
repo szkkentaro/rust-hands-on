@@ -14,4 +14,11 @@ fn main() {
     // let mut map = HashMap::new();
     // map.insert("Foo".to_string(), 42);
     // assert_eq!(map.get("Foo"), Some(&42));
+
+    let s = "Hello".to_string();
+    fn bar<T: AsRef<str>>(s: T) {
+        let slice = s.as_ref();
+        println!("s is comverted reference: {}", slice);
+    }
+    bar(s);
 }
