@@ -1,0 +1,6 @@
+[package]
+name = "benchmark_test"
+version = "0.1.0"
+authors = ["Kentaro SUZUKI <kentarock@gmail.com>"]
+
+[dependencies]
